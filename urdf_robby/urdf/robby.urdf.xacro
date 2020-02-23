@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robby">
+    <xacro:property name="body_len" value="1" />
+    <xacro:property name="body_width" value="0.6" />
+    <xacro:property name="body_height" value="0.2" />
+    <xacro:property name="wheel_width" value="0.05" />
+    <xacro:property name="wheel_rad" value="0.2" />
+    
+    <material name="blue">
+        <color rgba="0 0 0.8 1"/>
+    </material>
+    
+    <material name="white">
+        <color rgba="1 1 1 1"/>
+    </material>
+
+    <xacro:macro name="default_inertial" params="mass">
+        <inertial>
+            <mass value="${mass}" />
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+        </inertial>
+    </xacro:macro>
+
+    <!-- Body -->
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <box size="${body_len} ${body_width} ${body_height}"/>
+            </geometry>
+            <material name="blue"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${body_len} ${body_width} ${body_height}"/>
+            </geometry>
+        </collision>
+        <xacro:default_inertial mass="10"/>
+    </link>
+
+    <!-- Right front wheel -->
+    <link name="right_front_wheel">
+        <visual>
+            <geometry>
+                <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+            </geometry>
+            <material name="white"/>
+            <origin rpy="1.57075 1.57075 0" xyz="0 0 0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+            </geometry>
+        </collision>
+        <xacro:default_inertial mass="1"/>
+    </link>
+
+    <!-- Left front wheel -->
+    <link name="left_front_wheel">
+        <visual>
+            <geometry>
+                <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+            </geometry>
+            <material name="white"/>
+            <origin rpy="1.57075 1.57075 0" xyz="0 0 0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+            </geometry>
+        </collision>
+        <xacro:default_inertial mass="1"/>
+    </link>
+
+    <!-- Right back wheel -->
+    <link name="right_back_wheel">
+        <visual>
+            <geometry>
+                <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+            </geometry>
+            <material name="white"/>
+            <origin rpy="1.57075 1.57075 0" xyz="0 0 0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+            </geometry>
+        </collision>
+        <xacro:default_inertial mass="1"/>
+    </link>
+
+    <!-- Left back wheel -->
+    <link name="left_back_wheel">
+        <visual>
+            <geometry>
+                <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+            </geometry>
+            <material name="white"/>
+            <origin rpy="1.57075 1.57075 0" xyz="0 0 0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+            </geometry>
+        </collision>
+        <xacro:default_inertial mass="1"/>
+    </link>
+
+    <!-- right front wheel joint-->
+    <joint name="right_front_axel" type="continuous">
+        <parent link="base_link"/>
+        <child link="right_front_wheel"/>
+        <axis xyz="0 1 0"/>
+        <origin xyz="${body_len/2} ${body_width/(-2)} 0"/>
+    </joint>
+    
+    <!-- Left front wheel -->
+    <joint name="left_front_axel" type="continuous">
+        <parent link="base_link"/>
+        <child link="left_front_wheel"/>
+        <axis xyz="0 1 0"/>
+        <origin xyz="${body_len/2} ${body_width/2}"/>
+    </joint>
+    
+    <!-- right back wheel joint-->
+    <joint name="right_back_axel" type="continuous">
+        <parent link="base_link"/>
+        <child link="right_back_wheel"/>
+        <axis xyz="0 1 0"/>
+        <origin xyz="${body_len/(-2)} ${body_width/(-2)} 0"/>
+    </joint>
+    
+    <!-- left back wheel joint-->
+    <joint name="left_back_axel" type="continuous">
+        <parent link="base_link"/>
+        <child link="left_back_wheel"/>
+        <axis xyz="0 1 0"/>
+        <origin xyz="${body_len/(-2)} ${body_width/2} 0"/>
+    </joint>
+
+    <!-- Gazebo plugin for ROS Control -->
+    <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+            <robotNamespace>/</robotNamespace>
+        </plugin>
+    <gazebo/>
+</robot>
